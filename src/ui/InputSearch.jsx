@@ -1,26 +1,57 @@
 import { useState, useRef, useEffect } from "react";
 
+const options = [
+  "Option 1",
+  "Option 2",
+  "Option 3",
+  "Option 4",
+  "Option 5",
+  "Option 1",
+  "Option 2",
+  "Option 3",
+  "Option 4",
+  "Option 5",
+  "Option 1",
+  "Option 2",
+  "Option 3",
+  "Option 4",
+  "Option 5",
+  "Option 1",
+  "Option 2",
+  "Option 3",
+  "Option 4",
+  "Option 5",
+];
+
 const InputSearch = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [filteredOptions, setFilteredOptions] = useState([]);
   const inputRef = useRef(null);
   const menuRef = useRef(null);
 
   const handleInputChange = (e) => {
-    if (e.target.value.trim() !== "") {
+    const query = e.target.value.trim().toLowerCase();
+    if (query !== "") {
       setIsMenuVisible(true);
+      const filtered = options.filter((option) =>
+        option.toLowerCase().includes(query)
+      );
+      setFilteredOptions(filtered);
     } else {
       setIsMenuVisible(false);
+      setFilteredOptions([]);
     }
   };
 
-  const handleClickOutside = (event) => {
+  const handleClickOutside = (e) => {
     if (
       inputRef.current &&
-      !inputRef.current.contains(event.target) &&
+      !inputRef.current.contains(e.target) &&
       menuRef.current &&
-      !menuRef.current.contains(event.target)
+      !menuRef.current.contains(e.target)
     ) {
       setIsMenuVisible(false);
+      inputRef.current.value = "";
     }
   };
 
@@ -33,37 +64,29 @@ const InputSearch = () => {
 
   return (
     <>
-      <div className="relative w-72">
+      <div className="relative w-auto ">
         <input
           type="text"
           ref={inputRef}
-          className="bg-transparent px-4 py-1 outline-none border-none hidden sm:block"
+          className="bg-transparent px-4 py-1 outline-none border-none"
           placeholder="Search here..."
           onChange={handleInputChange}
         />
         {isMenuVisible && (
           <div
             ref={menuRef}
-            className="absolute left-0 w-full bg-black bg-opacity-40 border border-gray-800 rounded  max-h-96 overflow-y-scroll"
+            className="absolute left-0 w-72 bg-black bg-opacity-40 border border-gray-800 rounded  max-h-96 overflow-y-scroll"
           >
             <ul>
-              <li className="p-2  cursor-pointer">Option 1</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 2</li>
-              <li className="p-2  cursor-pointer">Option 3</li>
+              {filteredOptions.length > 0 ? (
+                filteredOptions.map((option, index) => (
+                  <li key={index} className="p-2 cursor-pointer">
+                    {option}
+                  </li>
+                ))
+              ) : (
+                <li className="p-2 text-gray-500">No options found</li>
+              )}
             </ul>
           </div>
         )}
