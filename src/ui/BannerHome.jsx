@@ -4,14 +4,19 @@ import {
   IoIosArrowDroprightCircle,
   IoIosArrowDropleftCircle,
 } from "react-icons/io";
+import { ImSpinner9 } from "react-icons/im";
 
 import { Button, IconButton } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useFetchData } from "../hooks/useFetchData";
 
 function BannerHome() {
-  const bannerData = useSelector((state) => state.movieData.bannerData);
-  const imageURL = useSelector((state) => state.movieData.imageURL);
+  const { data: bannerData } = useFetchData(
+    (state) => state.movieData.bannerData
+  );
+  const { data: imageURL } = useFetchData((state) => state.movieData.imageURL);
+
   const [currentImage, setCurrentImage] = useState(0);
 
   function handleNext() {
@@ -34,6 +39,12 @@ function BannerHome() {
   //     }, 10000);
   //     return () => clearInterval(interval);
   //   }, [bannerData, currentImage]);
+
+  if (bannerData.length === 0) {
+    return (
+      <ImSpinner9 className="w-14 h-14 animate-spin text-[#2332a4f6] absolute top-1/2 left-1/2" />
+    );
+  }
 
   return (
     <section className="w-full h-full relative">
