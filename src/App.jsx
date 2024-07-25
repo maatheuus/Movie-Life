@@ -6,12 +6,17 @@ import Explore from "./pages/Explore";
 import TvShows from "./pages/TvShows";
 import DetailsPage from "./pages/DetailsPage";
 import SearchPage from "./pages/SearchPage";
+import AppLayout from "./pages/AppLayout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <AppLayout />,
     children: [
+      {
+        path: "",
+        element: <Home />,
+      },
       {
         path: ":explore",
         element: <Explore />,
