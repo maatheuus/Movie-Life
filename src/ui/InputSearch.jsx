@@ -75,7 +75,7 @@ const InputSearch = () => {
         {isMenuVisible && (
           <div
             ref={menuRef}
-            className="absolute left-0 w-72 bg-black bg-opacity-40 border border-gray-800 rounded  max-h-96 overflow-y-scroll"
+            className="absolute left-0 w-72 bg-black bg-opacity-85 border border-gray-800 rounded  max-h-96 overflow-y-scroll"
           >
             <ul>
               {filteredOptions.length > 0 ? (
