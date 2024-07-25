@@ -131,18 +131,17 @@ function BannerHome() {
             </div>
           );
         })}
-
-        <div className="z-40 absolute -bottom-10 lg:-bottom-0 w-full flex justify-center items-center space-x-3">
-          {[...Array(bannerData.length)].map((banner, index) => (
-            <button
-              key={banner}
-              onClick={() => jumpToBanner(index)}
-              className={`w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 ${
-                index === currentImage && "!bg-gray-300"
-              }`}
-            ></button>
-          ))}
-        </div>
+      </div>
+      <div className="z-40 absolute -bottom-10 lg:-bottom-0 w-full flex justify-center items-center space-x-3">
+        {[...Array(bannerData.length)].map((banner, index) => (
+          <button
+            key={banner}
+            onClick={() => jumpToBanner(index)}
+            className={`w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 ${
+              index === currentImage && "!bg-gray-300"
+            }`}
+          ></button>
+        ))}
       </div>
     </section>
   );
