@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { FaPlayCircle, FaRegBookmark } from "react-icons/fa";
 import {
   IoIosArrowDroprightCircle,
@@ -111,7 +110,7 @@ function BannerHome() {
                         variant="outlined"
                         startIcon={<FaPlayCircle />}
                         sx={{
-                          background: "#2332a4f6",
+                          background: "#2332a4f6 ",
                           color: "white",
                           ":hover": {
                             background: "#2332a4f6",
