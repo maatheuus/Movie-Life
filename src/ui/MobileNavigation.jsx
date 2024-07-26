@@ -3,7 +3,7 @@ import { mobileNavigation } from "../features/navigation/Navigation";
 
 function MobileNavigation() {
   return (
-    <section className="sm:hidden bg-neutral-600 bg-opacity-40 fixed bottom-0 w-full h-14">
+    <section className="sm:hidden bg-black/30 backdrop-blur-3xl overflow-hidden fixed bottom-0 w-full h-14 z-[100]">
       <div className="flex justify-between items-center h-full ">
         {mobileNavigation.map((nav) => {
           return (
