@@ -5,3 +5,7 @@
 body {
   @apply bg-neutral-900 text-neutral-200;
 }
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
