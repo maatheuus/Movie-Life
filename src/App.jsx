@@ -25,10 +25,10 @@ const router = createBrowserRouter([
         path: ":explore/:id",
         element: <DetailsPage />,
       },
-      {
-        path: "/tv",
-        element: <TvShows />,
-      },
+      // {
+      //   path: "/tv",
+      //   element: <TvShows />,
+      // },
       {
         path: "/search",
         element: <SearchPage />,
