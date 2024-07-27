@@ -10,6 +10,7 @@ export function useFetch(endPoint, query = null) {
     try {
       setIsLoading(true);
       const res = await axios.get(endPoint, query);
+
       setData(res.data.results);
       setIsLoading(false);
     } catch (error) {
@@ -19,7 +20,7 @@ export function useFetch(endPoint, query = null) {
 
   useEffect(() => {
     fetchNowPlayingData();
-  }, []);
+  }, [endPoint]);
 
   return { isLoading, data };
 }
@@ -27,6 +28,7 @@ export function useFetch(endPoint, query = null) {
 export function useFetchNavigation(explore, page, setPage) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [totalResults, setTotalResults] = useState(0);
 
   async function fetchData() {
     try {
@@ -34,6 +36,7 @@ export function useFetchNavigation(explore, page, setPage) {
       const res = await axios.get(`discover/${explore}`, {
         params: { page },
       });
+      setTotalResults(res.data.total_results);
       setData((prev) => {
         const existingIds = new Set(prev.map((item) => item.id));
         const newResults = res.data.results.filter(
@@ -54,8 +57,9 @@ export function useFetchNavigation(explore, page, setPage) {
   useEffect(() => {
     setPage(1);
     setData([]);
+    setTotalResults(0);
     fetchData();
   }, [explore]);
 
-  return { isLoading, data };
+  return { isLoading, data, totalResults };
 }
