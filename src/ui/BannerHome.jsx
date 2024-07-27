@@ -3,12 +3,12 @@ import {
   IoIosArrowDroprightCircle,
   IoIosArrowDropleftCircle,
 } from "react-icons/io";
-import { ImSpinner9 } from "react-icons/im";
 
 import { Button, IconButton } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useFetchData } from "../hooks/useFetchData";
+import Spinner from "./Spinner";
 
 function BannerHome() {
   const { data: bannerData } = useFetchData(
@@ -40,9 +40,7 @@ function BannerHome() {
   //   }, [bannerData, currentImage]);
 
   if (bannerData.length === 0) {
-    return (
-      <ImSpinner9 className="w-14 h-14 animate-spin text-[#2332a4f6] absolute top-1/2 left-1/2" />
-    );
+    return <Spinner />;
   }
 
   return (
@@ -110,7 +108,7 @@ function BannerHome() {
                         variant="outlined"
                         startIcon={<FaPlayCircle />}
                         sx={{
-                          background: "#2332a4f6 ",
+                          background: "#2332a4f6",
                           color: "white",
                           ":hover": {
                             background: "#2332a4f6",
