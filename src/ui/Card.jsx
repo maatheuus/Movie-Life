@@ -1,7 +1,7 @@
 import moment from "moment";
 import { useFetchData } from "../hooks/useFetchData";
 import { FaStar } from "react-icons/fa";
-
+import noImage from "../../public/no-image.jpg";
 import Heading from "./Heading";
 import { Link } from "react-router-dom";
 
@@ -15,7 +15,11 @@ function Card({ data, trending, index, media_type }) {
       to={`/${mediaType}/${data?.id}`}
       className="w-full min-w-[230px] max-w-[230px] h-80 overflow-hidden block rounded relative hover:scale-105 hover:rotate-2 transition-all duration-300"
     >
-      <img src={imageURL + data?.poster_path} />
+      {data?.poster_path ? (
+        <img src={imageURL + data?.poster_path} alt="image the movie/tv show" />
+      ) : (
+        <img src={noImage} alt="image not available" />
+      )}
 
       <div className="absolute top-3">
         {trending && (
@@ -38,7 +42,7 @@ function Card({ data, trending, index, media_type }) {
             )}
           </p>
           <p className="text-[12px] flex items-center gap-x-1 bg-black/50 backdrop-blur-3xl overflow-hidden text-neutral-300 rounded-md px-1.5 font-bold">
-            {data?.vote_average.toFixed(1)}
+            {data?.vote_average?.toFixed(1)}
             <FaStar />
           </p>
         </div>
