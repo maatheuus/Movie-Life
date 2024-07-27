@@ -7,15 +7,15 @@ import { useState } from "react";
 import { useFetch } from "../hooks/useFetch";
 
 function Home() {
-  const { data: trendingData } = useFetchData(
-    (state) => state.movieData.bannerData
-  );
+  // const { data: trendingData } = useFetchData(
+  //   (state) => state.movieData.bannerData
+  // );
 
-  const { data: nowPlaying } = useFetch("/movie/now_playing");
-  const { data: topRatedMovies } = useFetch("/movie/top_rated");
-  const { data: mostPopularTvShows } = useFetch("/tv/popular");
-  const { data: topRatedTvShows } = useFetch("/tv/top_rated");
-  const { data: onAirShows } = useFetch("/tv/on_the_air");
+  // const { data: nowPlaying } = useFetch("/movie/now_playing");
+  // const { data: topRatedMovies } = useFetch("/movie/top_rated");
+  // const { data: mostPopularTvShows } = useFetch("/tv/popular");
+  // const { data: topRatedTvShows } = useFetch("/tv/top_rated");
+  // const { data: onAirShows } = useFetch("/tv/on_the_air");
 
   const ficctionData = Array.from({ length: 15 });
 
@@ -23,12 +23,12 @@ function Home() {
     <div>
       {/* <BannerHome /> */}
       {/**
-     * 
-       <HorizontalScrollCard
+      <HorizontalScrollCard
         moviesData={trendingData}
         heading="Treading"
         trending
       />
+       * 
       <div>
         <Heading
           as="h2"
