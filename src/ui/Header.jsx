@@ -18,7 +18,12 @@ function Header() {
         <div className="ml-auto flex items-center gap-5">
           <FormSearch className="hidden sm:flex">
             <InputSearch />
-            <IconButton aria-label="search" color="inherit" size="medium">
+            <IconButton
+              aria-label="search"
+              color="inherit"
+              size="medium"
+              sx={{ cursor: "default" }}
+            >
               <CiSearch />
             </IconButton>
           </FormSearch>
