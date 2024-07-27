@@ -1,45 +1,25 @@
-import { useState, useRef, useEffect } from "react";
-
-const options = [
-  "Option 1",
-  "Option 2",
-  "Option 3",
-  "Option 4",
-  "Option 5",
-  "Option 1",
-  "Option 2",
-  "Option 3",
-  "Option 4",
-  "Option 5",
-  "Option 1",
-  "Option 2",
-  "Option 3",
-  "Option 4",
-  "Option 5",
-  "Option 1",
-  "Option 2",
-  "Option 3",
-  "Option 4",
-  "Option 5",
-];
+import { useEffect, useRef, useState } from "react";
+import { useFetch } from "../hooks/useFetch";
+import CardInput from "./CardInput";
+import SpinnerMini from "./SpinnerMini";
 
 const InputSearch = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
   const menuRef = useRef(null);
 
+  const { data, isLoading } = useFetch(
+    `search/multi?query=${!inputValue ? [] : inputValue}`
+  );
+
   const handleInputChange = (e) => {
-    const query = e.target.value.trim().toLowerCase();
+    const query = e.target.value;
     if (query !== "") {
       setIsMenuVisible(true);
-      const filtered = options.filter((option) =>
-        option.toLowerCase().includes(query)
-      );
-      setFilteredOptions(filtered);
+      setInputValue(query);
     } else {
       setIsMenuVisible(false);
-      setFilteredOptions([]);
     }
   };
 
@@ -63,35 +43,31 @@ const InputSearch = () => {
   }, []);
 
   return (
-    <>
-      <div className="relative w-auto ">
-        <input
-          type="text"
-          ref={inputRef}
-          className="bg-transparent px-4 py-1 outline-none border-none"
-          placeholder="Search here..."
-          onChange={handleInputChange}
-        />
-        {isMenuVisible && (
-          <div
-            ref={menuRef}
-            className="absolute left-0 w-72 bg-black bg-opacity-85 border border-gray-800 rounded  max-h-96 overflow-y-scroll"
-          >
-            <ul>
-              {filteredOptions.length > 0 ? (
-                filteredOptions.map((option, index) => (
-                  <li key={index} className="p-2 cursor-pointer">
-                    {option}
-                  </li>
-                ))
-              ) : (
-                <li className="p-2 text-gray-500">No options found</li>
-              )}
-            </ul>
-          </div>
-        )}
-      </div>
-    </>
+    <div className="relative w-auto">
+      <input
+        type="text"
+        ref={inputRef}
+        onChange={handleInputChange}
+        className="bg-transparent px-4 py-1 outline-none border-none"
+        placeholder="Search here..."
+      />
+      {isMenuVisible && (
+        <div
+          ref={menuRef}
+          className="absolute left-0 w-72 bg-black bg-opacity-85 border border-gray-800 rounded  max-h-96 overflow-y-scroll scrollbar-none"
+        >
+          {isLoading ? (
+            <span className="flex justify-center py-10">
+              <SpinnerMini />
+            </span>
+          ) : data.length > 0 ? (
+            data.map((data) => <CardInput data={data} key={data.id} />)
+          ) : (
+            <p className="text-neutral-400 p-4">No data available.</p>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
