@@ -1,17 +1,20 @@
 import { createBrowserRouter } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import Spinner from "./ui/Spinner";
 
-import Home from "./pages/Home";
-import Explore from "./pages/Explore";
-import TvShows from "./pages/TvShows";
-import DetailsPage from "./pages/DetailsPage";
-import SearchPage from "./pages/SearchPage";
-import AppLayout from "./pages/AppLayout";
+const PageNotFound = lazy(() => import("./ui/PageNotFound"));
+const Home = lazy(() => import("./pages/Home"));
+const Explore = lazy(() => import("./pages/Explore"));
+const DetailsPage = lazy(() => import("./pages/DetailsPage"));
+const SearchPage = lazy(() => import("./pages/SearchPage"));
+const AppLayout = lazy(() => import("./pages/AppLayout"));
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
+    errorElement: <PageNotFound />,
     children: [
       {
         path: "",
@@ -25,10 +28,6 @@ const router = createBrowserRouter([
         path: ":explore/:id",
         element: <DetailsPage />,
       },
-      // {
-      //   path: "/tv",
-      //   element: <TvShows />,
-      // },
       {
         path: "/search",
         element: <SearchPage />,
@@ -38,7 +37,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <Suspense fallback={<Spinner />}>
+      <RouterProvider router={router} />
+    </Suspense>
+  );
 }
 
 export default App;
