@@ -2,22 +2,28 @@ import { useEffect, useRef, useState } from "react";
 import { useFetch } from "../hooks/useFetch";
 import CardInput from "./CardInput";
 import SpinnerMini from "./SpinnerMini";
+import useDebounce from "../hooks/useDebounce";
 
 const InputSearch = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [hasTyped, setHasTyped] = useState(false);
   const inputRef = useRef(null);
   const menuRef = useRef(null);
+  const debouncedInputValue = useDebounce(inputValue, 400);
 
   const { data, isLoading } = useFetch(
-    `search/multi?query=${!inputValue ? [] : inputValue}`
+    hasTyped && debouncedInputValue
+      ? `search/multi?query=${!debouncedInputValue ? [] : debouncedInputValue}`
+      : null
   );
 
   const handleInputChange = (e) => {
     const query = e.target.value;
+    setInputValue(query);
+    setHasTyped(true);
     if (query !== "") {
       setIsMenuVisible(true);
-      setInputValue(query);
     } else {
       setIsMenuVisible(false);
     }
@@ -31,7 +37,8 @@ const InputSearch = () => {
       !menuRef.current.contains(e.target)
     ) {
       setIsMenuVisible(false);
-      inputRef.current.value = "";
+      setInputValue("");
+      setHasTyped(false);
     }
   };
 
