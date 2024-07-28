@@ -1,9 +1,8 @@
-import moment from "moment";
 import { useFetchData } from "../hooks/useFetchData";
-import { FaStar } from "react-icons/fa";
 import noImage from "../../public/no-image.jpg";
 import Heading from "./Heading";
 import { Link } from "react-router-dom";
+import { formatDate } from "../utils/utils";
 
 function Card({ data, trending, index, media_type }) {
   const { data: imageURL } = useFetchData((state) => state.movieData.imageURL);
@@ -16,9 +15,13 @@ function Card({ data, trending, index, media_type }) {
       className="w-full min-w-[230px] max-w-[230px] h-80 overflow-hidden block rounded relative hover:scale-105 hover:rotate-2 transition-all duration-300"
     >
       {data?.poster_path ? (
-        <img src={imageURL + data?.poster_path} alt="image the movie/tv show" />
+        <img
+          src={imageURL + data?.poster_path}
+          alt={`image of ${mediaType}`}
+          loading="lazy"
+        />
       ) : (
-        <img src={noImage} alt="image not available" />
+        <img src={noImage} alt="image not available" loading="lazy" />
       )}
 
       <div className="absolute top-3">
@@ -37,13 +40,10 @@ function Card({ data, trending, index, media_type }) {
         />
         <div className="text-sm flex justify-between">
           <p className="text-neutral-500">
-            {moment(data?.release_date || data?.first_air_date).format(
-              "MMM Do YY"
-            )}
+            {formatDate(data?.release_date || data?.first_air_date)}
           </p>
           <p className="text-[12px] flex items-center gap-x-1 bg-black/50 backdrop-blur-3xl overflow-hidden text-neutral-300 rounded-md px-1.5 font-bold">
-            {data?.vote_average?.toFixed(1)}
-            <FaStar />
+            Rating: {data?.vote_average?.toFixed(1)}
           </p>
         </div>
       </div>

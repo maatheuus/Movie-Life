@@ -17,6 +17,7 @@ function SearchPage() {
     setInputValue(inputRef.current.value);
   }
 
+  if (isLoading) return <Spinner />;
   // IMPLEMENT FEAT OF LOAD MORE DATA
   return (
     <div className="py-16">
@@ -46,7 +47,7 @@ function SearchPage() {
         </FormSearch>
       </div>
 
-      {isLoading && <Spinner />}
+      {/* {isLoading && <Spinner />} */}
 
       {data.length > 0 && (
         <div className="container mx-auto px-7">

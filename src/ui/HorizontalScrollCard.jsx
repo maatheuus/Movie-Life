@@ -6,8 +6,14 @@ import {
   IoIosArrowDroprightCircle,
   IoIosArrowDropleftCircle,
 } from "react-icons/io";
+import ScrollButtons from "./ScrollButtons";
 
-function HorizontalScrollCard({ moviesData = [], heading, trending }) {
+function HorizontalScrollCard({
+  moviesData = [],
+  heading,
+  trending,
+  media_type,
+}) {
   const containerRef = useRef();
 
   function handleNext() {
@@ -33,29 +39,15 @@ function HorizontalScrollCard({ moviesData = [], heading, trending }) {
               data={data}
               index={index + 1}
               trending={trending}
+              media_type={media_type}
             />
           ))}
         </div>
-
         <div className="absolute top-0 h-full w-full hidden lg:flex items-center justify-between">
-          <IconButton
-            onClick={handlePrevious}
-            aria-label="back"
-            size="large"
-            color="inherit"
-            className="z-40"
-          >
-            <IoIosArrowDropleftCircle />
-          </IconButton>
-          <IconButton
-            onClick={handleNext}
-            aria-label="forward"
-            size="large"
-            color="inherit"
-            className="z-40"
-          >
-            <IoIosArrowDroprightCircle />
-          </IconButton>
+          <ScrollButtons
+            handleNext={handleNext}
+            handlePrevious={handlePrevious}
+          />
         </div>
       </div>
     </div>

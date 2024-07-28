@@ -10,7 +10,7 @@ function MobileNavigation() {
             <NavLink
               key={nav.label}
               to={nav.href}
-              className="px-8 flex h-full items-center flex-col justify-center"
+              className="px-4 lg:px-8 flex h-full items-center flex-col justify-center"
             >
               <div className="text-2xl">{nav.icon}</div>
               <p className="text-sm">{nav.label}</p>
