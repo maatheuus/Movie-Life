@@ -15,7 +15,7 @@ function CardInput({ data, media_type }) {
       to={`/${mediaType}/${data?.id}`}
       className="w-full min-w-[210px] max-w-[210px] h-80 overflow-hidden block rounded relative my-4 mx-auto  border-4 border-white"
     >
-      <img src={imageURL + data?.poster_path} />
+      <img src={imageURL + data?.poster_path} loading="lazy" />
 
       <div className="absolute flex flex-col gap-y-2 bottom-0 h-16 px-2 py-1 backdrop-blur-3xl w-full bg-black/60 overflow-hidden">
         <Heading
