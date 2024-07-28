@@ -7,20 +7,22 @@ export function useFetch(endPoint, query = null) {
   const [isLoading, setIsLoading] = useState(false);
 
   async function fetchNowPlayingData() {
+    if (!endPoint) return;
+
     try {
       setIsLoading(true);
       const res = await axios.get(endPoint, query);
-
       setData(res.data.results);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+      throw new Error(error);
     }
   }
 
   useEffect(() => {
     fetchNowPlayingData();
-  }, [endPoint]);
+  }, [endPoint, query]);
 
   return { isLoading, data };
 }
@@ -46,7 +48,7 @@ export function useFetchNavigation(explore, page, setPage) {
       });
       setIsLoading(false);
     } catch (error) {
-      console.log("error", error);
+      throw new Error(error);
     }
   }
 
