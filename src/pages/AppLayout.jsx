@@ -1,8 +1,11 @@
 import { Outlet } from "react-router-dom";
 import Header from "../ui/Header";
-import MobileNavigation from "../ui/MobileNavigation";
 import { useFetchData } from "../hooks/useFetchData";
 import { useEffect } from "react";
+import { lazy, Suspense } from "react";
+import Spinner from "../ui/Spinner";
+
+const MobileNavigation = lazy(() => import("../ui/MobileNavigation"));
 
 function AppLayout() {
   const { handleFetch, handleFetchConfig } = useFetchData();
@@ -18,7 +21,9 @@ function AppLayout() {
       <div className="min-h-[94h]">
         <Outlet />
       </div>
-      <MobileNavigation />
+      <Suspense fallback={<Spinner />}>
+        <MobileNavigation />
+      </Suspense>
     </main>
   );
 }
