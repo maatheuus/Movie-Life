@@ -5,6 +5,7 @@ import { useFetchNavigation } from "../hooks/useFetch";
 import Card from "../ui/Card";
 import Spinner from "../ui/Spinner";
 import SpinnerMini from "../ui/SpinnerMini";
+import { formatLocale } from "../utils/utils";
 
 function ExplorePage() {
   const { explore } = useParams();
@@ -16,19 +17,17 @@ function ExplorePage() {
   );
 
   if (data.length === 0) {
-    return (
-      <Spinner className="w-14 h-14 animate-spin text-[#2332a4f6] absolute top-1/2 left-1/2" />
-    );
+    return <Spinner />;
   }
   return (
-    <div className="pt-16">
+    <div className="pt-16 px-4">
       <div className="container mx-auto">
         <div className="w-full flex justify-between items-center my-4">
           <h3 className="capitalize text-lg lg:text-xl font-semibold">
             Popular {explore === "tv" ? `${explore} shows` : `${explore}s`}
           </h3>
           <p className="text-sm text-neutral-400">
-            Total Results: {totalResults.toLocaleString("en-US")}
+            Total Results: {formatLocale(totalResults)}
           </p>
         </div>
 
