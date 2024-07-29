@@ -9,6 +9,8 @@ const Explore = lazy(() => import("./pages/Explore"));
 const DetailsPage = lazy(() => import("./pages/DetailsPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const AppLayout = lazy(() => import("./pages/AppLayout"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const SignUpPage = lazy(() => import("./pages/SignUpPage"));
 
 const router = createBrowserRouter([
   {
@@ -34,6 +36,9 @@ const router = createBrowserRouter([
       },
     ],
   },
+
+  { path: "/login", element: <LoginPage /> },
+  { path: "/signup", element: <SignUpPage /> },
 ]);
 
 function App() {
