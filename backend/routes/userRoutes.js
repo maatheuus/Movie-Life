@@ -1,6 +1,12 @@
 import { Router } from "express";
-import { signup } from "../controllers/authController.js";
 import {
+  signup,
+  login,
+  logout,
+  protect,
+} from "../controllers/authController.js";
+import {
+  resizeImages,
   updateAccount,
   uploadUserPhoto,
 } from "../controllers/userController.js";
@@ -8,5 +14,10 @@ import {
 export const router = Router();
 
 router.post("/signup", signup);
+router.post("/login", login);
+router.post("/logout", logout);
 
-router.post("/update", uploadUserPhoto, updateAccount);
+// Protect all routes after this middleware
+router.use(protect);
+
+router.patch("/update", uploadUserPhoto, resizeImages, updateAccount);
