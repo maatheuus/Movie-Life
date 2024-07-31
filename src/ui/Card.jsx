@@ -1,5 +1,5 @@
 import { useFetchData } from "../hooks/useFetchData";
-import noImage from "../../public/no-image.jpg";
+import noImage from "../../public/img/no-image.jpg";
 import Heading from "./Heading";
 import { Link } from "react-router-dom";
 import { formatDate } from "../utils/utils";
