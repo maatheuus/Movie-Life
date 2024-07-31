@@ -1,51 +1,29 @@
 import { Link } from "react-router-dom";
-import bgImage from "../../../public/movie_wallpaper.jpg";
-import { RiMovie2Line } from "react-icons/ri";
 import { Button } from "@mui/material";
 import LayoutAuth from "./LayoutAuth";
+import { useForm } from "react-hook-form";
+import FormAuth from "./FormAuth";
 
 function Login() {
+  const { register, formState, handleSubmit } = useForm();
+  const { errors } = formState;
+
+  function onSubmit(data) {
+    console.log(data);
+  }
+
   return (
     <LayoutAuth title="Sign in to access your account">
-      <form>
-        <div>
-          <label htmlFor="email" className="block mb-2 text-sm text-gray-600">
-            Email Address
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="example@example.com"
-            className="block w-full px-4 py-2 mt-2 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30"
-          />
-        </div>
-
-        <div className="mt-6">
-          <div className="flex justify-between mb-2">
-            <label htmlFor="password" className="text-sm text-gray-600">
-              Password
-            </label>
-            <Link
-              to="#"
-              className="text-sm text-gray-400 focus:text-blue-500 hover:text-blue-500 hover:underline"
-            >
-              Forgot password?
-            </Link>
-          </div>
-
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Your Password"
-            className="block w-full px-4 py-2 mt-2 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 outline-none border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-30"
-          />
-        </div>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-2 mt-4"
+      >
+        <FormAuth register={register} errors={errors} login />
 
         <div className="mt-6">
           <Button
-            className="w-full !bg-[#2332a4f6]"
+            className="w-full !py-3 !bg-[#2332a4f6]"
+            type="submit"
             color="primary"
             variant="contained"
           >
