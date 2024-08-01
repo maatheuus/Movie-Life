@@ -3,6 +3,8 @@ import { useFetchData } from "../hooks/useFetchData";
 import { ButtonFavorite, ButtonPlay } from "./ButtonPlay";
 import ScrollButtons from "./ScrollButtons";
 import Spinner from "./Spinner";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../features/authentication/useUser";
 
 function BannerHome() {
   const { data: bannerData } = useFetchData(
@@ -12,6 +14,8 @@ function BannerHome() {
 
   const [currentImage, setCurrentImage] = useState(0);
   const [favorite, setFavorite] = useState(false);
+  const navigate = useNavigate();
+  const { isAuthenticated } = useUser();
 
   function handleNext() {
     if (currentImage === bannerData.length - 1) setCurrentImage(0);
@@ -29,6 +33,7 @@ function BannerHome() {
 
   function handleFavorite(id) {
     console.log(id);
+    if (!isAuthenticated) navigate("/login");
     setFavorite((prev) => !prev);
   }
 
@@ -113,7 +118,7 @@ function BannerHome() {
       <div className="z-40 w-full absolute -bottom-10 lg:-bottom-0 flex justify-center items-center space-x-2 lg:space-x-3">
         {[...Array(bannerData.length)].map((banner, index) => (
           <button
-            key={banner}
+            key={index}
             onClick={() => jumpToBanner(index)}
             className={`w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 ${
               index === currentImage &&
