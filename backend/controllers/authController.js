@@ -44,10 +44,6 @@ export const signup = catchAsync(async (req, res, next) => {
   console.log("newUser", newUser);
 
   createSendToken(newUser, "authenticated", 201, req, res);
-
-  // res.status(200).json({
-  //   status: "success",
-  // });
 });
 
 export const login = catchAsync(async (req, res, next) => {
