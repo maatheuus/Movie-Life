@@ -8,9 +8,8 @@ function FormAuth({
   errors,
   name,
   confirmPassword,
-  photo,
   login,
-  profilePhoto,
+  disable,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -31,7 +30,8 @@ function FormAuth({
             type="text"
             id="name"
             name="name"
-            className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30"
+            disable={disable}
+            className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30 disabled:bg-gray-700"
             placeholder="Your name"
             {...register("name", {
               required: {
@@ -46,35 +46,18 @@ function FormAuth({
         </div>
       )}
 
-      {photo && (
-        <label
-          htmlFor="file"
-          className="w-full flex items-center px-3 py-3 mx-auto text-center border-2 border-dashed rounded-lg cursor-pointer border-gray-600 bg-gray-900"
-        >
-          <FaArrowUpFromBracket className="w-auto h-5 text-gray-500" />
-
-          <h2 className="mx-3 text-gray-400">{profilePhoto}</h2>
-
-          <input
-            id="file"
-            type="file"
-            {...register("profilePhoto")}
-            className="hidden"
-          />
-        </label>
-      )}
-
       <div className="relative flex flex-col">
         <label htmlFor="email" className="block mb-2 text-sm text-gray-600">
           Email Address
         </label>
 
         <input
+          disable={disable}
           type="email"
           autoComplete="email"
           id="email"
           name="email"
-          className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30"
+          className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30 disabled:bg-gray-700"
           placeholder="example@example.com"
           {...register("email", {
             required: {
@@ -125,7 +108,9 @@ function FormAuth({
           type={showPassword ? "text" : "password"}
           id="password"
           name="password"
-          className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30"
+          placeholder="Your password"
+          disable={disable}
+          className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30 disabled:bg-gray-700"
           {...register("password", {
             required: {
               value: true,
@@ -168,8 +153,10 @@ function FormAuth({
           <input
             type={showConfirmPassword ? "text" : "password"}
             id="confirmPassword"
+            disable={disable}
             name="confirmPassword"
-            className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30"
+            className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30 disabled:bg-gray-700"
+            placeholder="Confirm your password"
             {...register("confirmPassword", {
               required: "Please, confirm your password",
               validate: (value) =>
