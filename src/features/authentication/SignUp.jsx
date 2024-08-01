@@ -1,20 +1,19 @@
-import { Button } from "@mui/material";
-import LayoutAuth from "./LayoutAuth";
-import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
+import { useSignup } from "./useSignup";
 import FormAuth from "./FormAuth";
-import { useState } from "react";
+import LayoutAuth from "./LayoutAuth";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 function SignUp() {
-  const [profilePhoto, setProfilePhoto] = useState("Profile Photo");
   const { register, formState, handleSubmit, getValues } = useForm();
   const { errors } = formState;
+  const { isLoading, signup } = useSignup();
 
   function onSubmit(data) {
-    console.log(data);
-    setProfilePhoto(data.profilePhoto[0].name);
+    signup(data);
   }
-  console.log(profilePhoto);
 
   return (
     <LayoutAuth title="Sign up to save some movies">
@@ -23,29 +22,34 @@ function SignUp() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <FormAuth
-          register={register}
-          errors={errors}
-          getValues={getValues}
           name
-          photo
           confirmPassword
-          profilePhoto={profilePhoto}
+          disable={isLoading}
+          errors={errors}
+          register={register}
+          getValues={getValues}
         />
 
         <div className="mt-6">
           <Button
-            className="w-full !py-3 !bg-[#2332a4f6]"
+            className="w-full !py-3 !bg-[#2332a4f6] disabled:!bg-[#2332a46a] disabled:cursor-not-allowed"
             type="submit"
             color="primary"
             variant="contained"
+            disabled={isLoading}
           >
-            Sign Up
+            {isLoading ? <SpinnerMini className="text-white" /> : "Sign Up"}
           </Button>
 
           <div className="mt-6 text-center ">
-            <Link to="/login" className="text-sm text-blue-500 hover:underline">
-              Already have an account?
-            </Link>
+            {!isLoading && (
+              <Link
+                to="/login"
+                className="text-sm text-blue-500 hover:underline"
+              >
+                Already have an account?
+              </Link>
+            )}
           </div>
         </div>
       </form>
