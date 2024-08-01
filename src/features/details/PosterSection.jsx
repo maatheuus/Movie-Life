@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { ButtonPlay, ButtonFavorite } from "../../ui/ButtonPlay";
-
+import { useUser } from "../authentication/useUser";
+import { useNavigate } from "react-router-dom";
 function PosterSection({ imageURL, posterPath, onPlay }) {
   const [favorite, setFavorite] = useState(false);
+  const navigate = useNavigate();
+  const { isAuthenticated } = useUser();
   function handleFavorite() {
+    if (!isAuthenticated) navigate("/login");
     setFavorite((prev) => !prev);
   }
 
