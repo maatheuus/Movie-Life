@@ -1,9 +1,7 @@
 import BannerHome from "../ui/BannerHome";
 import { useFetchData } from "../hooks/useFetchData";
-import Card from "../ui/Card";
 import Heading from "../ui/Heading";
 import HorizontalScrollCard from "../ui/HorizontalScrollCard";
-import { useState } from "react";
 import { useFetch } from "../hooks/useFetch";
 import Spinner from "../ui/Spinner";
 
