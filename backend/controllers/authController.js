@@ -9,7 +9,7 @@ const signToken = (id) => {
   });
 };
 
-const createSendToken = (user, role, statusCode, req, res) => {
+export const createSendToken = (user, role, statusCode, req, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
     expiresIn: new Date(
