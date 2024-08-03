@@ -2,6 +2,7 @@ import multer from "multer";
 import catchAsync from "../utils/catchAsync.js";
 import sharp from "sharp";
 import User from "../models/userModel.js";
+import { createSendToken } from "./authController.js";
 
 const multerStorage = multer.memoryStorage();
 
@@ -44,18 +45,12 @@ const filterObj = (obj, ...allowedFields) => {
 
 export const updateAccount = catchAsync(async (req, res, next) => {
   const filteredBody = filterObj(req.body, "name", "email");
-  if (req.file) filteredBody.photo = req.file.fileName;
+  if (req.file) filteredBody.photo = req?.file.fileName;
 
   const updateUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,
-    returnDocument: "after",
   });
 
-  res.status(200).json({
-    status: "success",
-    data: {
-      user: updateUser,
-    },
-  });
+  createSendToken(updateUser, "authenticated", 200, req, res);
 });
