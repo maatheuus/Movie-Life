@@ -11,8 +11,6 @@ export function useUpdate() {
       return updateUser(token, data);
     },
     onSuccess: (user) => {
-      // console.log("Success", user);
-      // queryClient.invalidateQueries(["user"]);
       queryClient.setQueryData(["user"], () => user);
     },
     onError: (err) => console.error("error", err),
