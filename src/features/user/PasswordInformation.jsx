@@ -1,4 +1,14 @@
+import { useForm } from "react-hook-form";
+import { useUser } from "../authentication/useUser";
+import { useUpdate } from "./useUpdate";
+
 function PasswordInformation() {
+  const { user } = useUser();
+  const { update, isLoading } = useUpdate();
+  const { register, formState, handleSubmit } = useForm();
+
+  // const { email, name, photo } = user;
+
   return (
     <div className="bg-stone-200 px-8 py-10 flex flex-col gap-y-6 md:rounded-lg lg:pt-12">
       <div>
@@ -8,7 +18,10 @@ function PasswordInformation() {
         </p>
       </div>
 
-      <form className="px-6 flex flex-col gap-y-6">
+      <form
+        className="px-6 flex flex-col gap-y-6"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div>
           <label
             htmlFor="currentPassword"
