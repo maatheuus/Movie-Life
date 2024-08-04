@@ -9,7 +9,9 @@ import FormSearch from "./FormSearch";
 import InputSearch from "./InputSearch";
 
 function Header() {
-  const { isAuthenticated } = useUser();
+  const { isAuthenticated, user = [] } = useUser();
+  const { photo } = user;
+
   return (
     <header className="fixed top-0 w-full h-16 bg-black bg-opacity-75 z-50">
       <div className="container mx-auto px-3 flex items-center h-full">
@@ -32,7 +34,10 @@ function Header() {
 
           {isAuthenticated ? (
             <Link to="/account" arial-label="guest arear button">
-              <Avatar alt="Profile user" src={defaultUser} />
+              <Avatar
+                alt="Profile user"
+                src={photo ? `../../../public/img/users/${photo}` : defaultUser}
+              />
             </Link>
           ) : (
             <Link
