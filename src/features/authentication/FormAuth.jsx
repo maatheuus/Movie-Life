@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaArrowUpFromBracket, FaEye, FaEyeSlash } from "react-icons/fa6";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 function FormAuth({
