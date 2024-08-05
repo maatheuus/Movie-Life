@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import Spinner from "./ui/Spinner";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ProtectedRouter from "./ui/ProtectedRouter";
+import Spinner from "./ui/Spinner";
 
 const PageNotFound = lazy(() => import("./ui/PageNotFound"));
 const Home = lazy(() => import("./pages/Home"));
@@ -15,6 +15,9 @@ const AppLayout = lazy(() => import("./pages/AppLayout"));
 const AccountPage = lazy(() => import("./pages/AccountPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const SignUpPage = lazy(() => import("./pages/SignUpPage"));
+const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
+const NewPasswordPage = lazy(() => import("./pages/NewPasswordPage"));
 
 const router = createBrowserRouter([
   {
@@ -51,6 +54,15 @@ const router = createBrowserRouter([
 
   { path: "/login", element: <LoginPage /> },
   { path: "/signup", element: <SignUpPage /> },
+  { path: "/forgot", element: <ForgotPasswordPage /> },
+  {
+    path: "/reset",
+    element: <ResetPasswordPage />,
+  },
+  {
+    path: "newPassword",
+    element: <NewPasswordPage />,
+  },
 ]);
 
 const queryClient = new QueryClient({
