@@ -28,13 +28,43 @@ export async function login(data) {
       throw new Error("Something went wrong to login, try again later!");
 
     return res.data;
-  } catch (error) {}
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }
 export async function logout() {
   try {
     return await axios.get(`${URL}/logout`);
   } catch (error) {
     // console.log(error);
+    throw new Error(error.message);
+  }
+}
+
+export async function forgotPassword(email) {
+  try {
+    const res = await axios.post(`${URL}/forgotPassword`, email);
+
+    if (res.status !== 200)
+      throw new Error("Something went wrong while send the reset password");
+
+    return res.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function resetPassword({ token, updatePassword }) {
+  try {
+    const res = await axios.patch(
+      `${URL}/resetPassword/${token.token}`,
+      updatePassword
+    );
+    if (res.status !== 200)
+      throw new Error("Something went wrong while send the reset password");
+
+    return res.data;
+  } catch (error) {
     throw new Error(error.message);
   }
 }
