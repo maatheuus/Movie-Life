@@ -99,7 +99,10 @@ function FormAuth({
             </button>
           </div>
           {login && (
-            <Link to="#" className="text-sm text-blue-500 hover:underline">
+            <Link
+              to="/forgot"
+              className="text-sm text-blue-500 hover:underline"
+            >
               Forgot password?
             </Link>
           )}
