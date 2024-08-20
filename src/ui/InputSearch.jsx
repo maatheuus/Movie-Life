@@ -3,6 +3,7 @@ import { useFetch } from "../hooks/useFetch";
 import CardInput from "./CardInput";
 import SpinnerMini from "./SpinnerMini";
 import useDebounce from "../hooks/useDebounce";
+import { useCallback } from "react";
 
 const InputSearch = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -18,18 +19,14 @@ const InputSearch = () => {
       : null
   );
 
-  const handleInputChange = (e) => {
+  const handleInputChange = useCallback((e) => {
     const query = e.target.value;
     setInputValue(query);
-    setHasTyped(true);
-    if (query !== "") {
-      setIsMenuVisible(true);
-    } else {
-      setIsMenuVisible(false);
-    }
-  };
+    setHasTyped(query !== "");
+    setIsMenuVisible(query !== "");
+  }, []);
 
-  const handleClickOutside = (e) => {
+  const handleClickOutside = useCallback((e) => {
     if (
       inputRef.current &&
       !inputRef.current.contains(e.target) &&
@@ -40,14 +37,14 @@ const InputSearch = () => {
       setInputValue("");
       setHasTyped(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [handleClickOutside]);
 
   return (
     <div className="relative w-auto">
@@ -55,7 +52,7 @@ const InputSearch = () => {
         type="text"
         ref={inputRef}
         onChange={handleInputChange}
-        className="bg-transparent px-4 py-1 outline-none border-none"
+        className="bg-transparent py-1 outline-none border-none w-auto md:w-72"
         placeholder="Search here..."
       />
       {isMenuVisible && (
@@ -67,8 +64,8 @@ const InputSearch = () => {
             <span className="flex justify-center py-10">
               <SpinnerMini />
             </span>
-          ) : data.length > 0 ? (
-            data.map((data) => <CardInput data={data} key={data.id} />)
+          ) : data?.length > 0 ? (
+            data?.map((data) => <CardInput data={data} key={data.id} />)
           ) : (
             <p className="text-neutral-400 p-4">No data available.</p>
           )}
