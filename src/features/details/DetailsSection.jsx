@@ -1,5 +1,5 @@
 import HeadingDetails from "./HeadingDetails";
-import { FaStar } from "react-icons/fa";
+import { Star } from "lucide-react";
 import DetailsText from "./DetailsText";
 import { formatDate, formatLocale } from "../../utils/utils";
 import Divider from "../../ui/Divider";
@@ -23,7 +23,7 @@ function DetailsSection({ data, duration, director, writer }) {
       <Divider />
       <div className="flex flex-wrap items-center gap-3">
         <p className="flex gap-x-1 items-center text-stone-100">
-          <FaStar /> {Number(data?.vote_average).toFixed(1)}+
+          <Star /> {Number(data?.vote_average).toFixed(1)}+
         </p>
         <span>|</span>
         <DetailsText title="Views" text={Number(data?.popularity)} />
