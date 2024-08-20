@@ -1,39 +1,57 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
-import { RiMovie2Line, RiHomeLine } from "react-icons/ri";
-import { PiTelevisionSimpleBold } from "react-icons/pi";
-import { CiSearch } from "react-icons/ci";
+import { twMerge } from "tailwind-merge";
+import { Film, House, Tv, Search, Bookmark } from "lucide-react";
 
 export const navigationTop = [
-  { label: "Tv Shows", href: "/tv", icon: <PiTelevisionSimpleBold /> },
-  { label: "Movie", href: "/movie", icon: <RiMovie2Line /> },
+  {
+    label: "Series",
+    href: "/tv",
+    icon: <Tv />,
+  },
+  {
+    label: "Movie",
+    href: "/movie",
+    icon: <Film />,
+  },
 ];
 
 export const mobileNavigation = [
   {
     label: "Home",
     href: "/",
-    icon: <RiHomeLine />,
+    icon: <House />,
   },
   ...navigationTop,
   {
-    label: "search",
+    label: "Favorites",
+    href: "/favorite",
+    icon: <Bookmark />,
+  },
+  {
+    label: "Search",
     href: "/search",
-    icon: <CiSearch />,
+    icon: <Search />,
   },
 ];
 
 function Navigation() {
+  const { explore } = useParams();
   return (
-    <nav className="hidden sm:flex items-center gap-1 ml-5">
+    <nav className="hidden sm:flex items-center gap-2 ml-5">
       {navigationTop.map((nav) => {
+        const href = nav.href.split("/")[1];
+        const active = href === explore;
         return (
           <NavLink
             key={nav.label}
-            className="px-2 hover:text-neutral-50"
+            className={twMerge(
+              "px-3 text-neutral-400 transition-all duration-150 hover:text-neutral-50",
+              active && "font-bold text-neutral-50"
+            )}
             to={nav.href}
           >
-            {nav.label}
+            <span className="font-semibold hover:font-bold">{nav.label}</span>
           </NavLink>
         );
       })}
