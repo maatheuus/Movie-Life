@@ -1,6 +1,8 @@
-import { Button, Fab, Tooltip } from "@mui/material";
-import { FaPlayCircle, FaRegBookmark, FaBookmark } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { Button, Fab, Tooltip } from "@mui/material";
+import { CirclePlay, Bookmark } from "lucide-react";
+
+import SpinnerMini from "../ui/SpinnerMini";
 
 export function ButtonPlay({ to, renderPlay, className }) {
   if (to) {
@@ -8,7 +10,7 @@ export function ButtonPlay({ to, renderPlay, className }) {
       <Link to={to} className={className}>
         <Button
           variant="outlined"
-          startIcon={<FaPlayCircle />}
+          startIcon={<CirclePlay />}
           sx={{
             background: "#2332a4f6",
             color: "white",
@@ -28,7 +30,7 @@ export function ButtonPlay({ to, renderPlay, className }) {
       variant="outlined"
       onClick={renderPlay}
       className={className}
-      startIcon={<FaPlayCircle />}
+      startIcon={<CirclePlay />}
       sx={{
         background: "#2332a4f6",
         color: "white",
@@ -43,7 +45,12 @@ export function ButtonPlay({ to, renderPlay, className }) {
   );
 }
 
-export function ButtonFavorite({ isFavorite, renderFavorite, className }) {
+export function ButtonFavorite({
+  isLoading,
+  isFavorite,
+  renderFavorite,
+  className,
+}) {
   return (
     <Tooltip title="Watchlist">
       <Fab
@@ -60,9 +67,15 @@ export function ButtonFavorite({ isFavorite, renderFavorite, className }) {
         onClick={renderFavorite}
       >
         {isFavorite ? (
-          <FaBookmark className="w-4 h-5" />
+          isLoading ? (
+            <SpinnerMini className="text-white" />
+          ) : (
+            <Bookmark size={26} fill="#fff" />
+          )
+        ) : isLoading ? (
+          <SpinnerMini className="text-white" />
         ) : (
-          <FaRegBookmark className="w-4 h-5" />
+          <Bookmark size={26} />
         )}
       </Fab>
     </Tooltip>
