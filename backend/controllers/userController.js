@@ -2,7 +2,9 @@ import multer from "multer";
 import catchAsync from "../utils/catchAsync.js";
 import sharp from "sharp";
 import User from "../models/userModel.js";
+import Favorites from "../models/favoritesModel.js";
 import { createSendToken } from "./authController.js";
+import AppError from "../utils/appError.js";
 
 const multerStorage = multer.memoryStorage();
 
@@ -43,7 +45,7 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-export const updateAccount = catchAsync(async (req, res, next) => {
+export const updateAccount = catchAsync(async (req, res) => {
   const filteredBody = filterObj(req.body, "name", "email");
   if (req.file) filteredBody.photo = req?.file.fileName;
 
@@ -53,4 +55,17 @@ export const updateAccount = catchAsync(async (req, res, next) => {
   });
 
   createSendToken(updateUser, "authenticated", 200, req, res);
+});
+
+export const deleteAccount = catchAsync(async (req, res, next) => {
+  const doc = await User.findByIdAndDelete(req.params.id);
+  const secDoc = await Favorites.findOneAndDelete({ userId: req.params.id });
+
+  if (!doc) return next(new AppError("No document found with that ID", 404));
+  if (!secDoc) return next();
+
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
 });
