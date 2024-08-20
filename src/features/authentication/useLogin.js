@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { login as loginAPI } from "../../api/authApi";
+import toast from "react-hot-toast";
 
 export function useLogin() {
   const queryClient = useQueryClient();
@@ -12,7 +13,11 @@ export function useLogin() {
       queryClient.setQueryData(["user"], user);
       navigate("/");
     },
-    onError: () => console.log("Error"),
+    onError: (err) => {
+      if (err.message.includes("401"))
+        toast.error("Incorrect email or password");
+      else toast.error(err.message);
+    },
   });
 
   return { isLoading, login };
