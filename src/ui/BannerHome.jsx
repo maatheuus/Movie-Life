@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useFetchData } from "../hooks/useFetchData";
-import { ButtonFavorite, ButtonPlay } from "./ButtonPlay";
+import { ButtonPlay } from "./ButtonPlay";
 import ScrollButtons from "./ScrollButtons";
 import Spinner from "./Spinner";
-import { useNavigate } from "react-router-dom";
-import { useUser } from "../features/authentication/useUser";
+import { useEffect } from "react";
+import { twMerge } from "tailwind-merge";
 
 function BannerHome() {
   const { data: bannerData } = useFetchData(
@@ -13,38 +13,26 @@ function BannerHome() {
   const { data: imageURL } = useFetchData((state) => state.movieData.imageURL);
 
   const [currentImage, setCurrentImage] = useState(0);
-  const [favorite, setFavorite] = useState(false);
-  const navigate = useNavigate();
-  const { isAuthenticated } = useUser();
 
-  function handleNext() {
-    if (currentImage === bannerData.length - 1) setCurrentImage(0);
-    else setCurrentImage((prev) => prev + 1);
-  }
+  const handleNext = useCallback(() => {
+    setCurrentImage((prev) => (prev === bannerData.length - 1 ? 0 : prev + 1));
+  }, [bannerData.length]);
 
-  function handlePrevious() {
-    if (currentImage <= 0) setCurrentImage(bannerData.length - 1);
-    else setCurrentImage((prev) => prev - 1);
-  }
+  const handlePrevious = useCallback(() => {
+    setCurrentImage((prev) => (prev <= 0 ? bannerData.length - 1 : prev - 1));
+  }, [bannerData.length]);
 
-  function jumpToBanner(index) {
+  const jumpToBanner = useCallback((index) => {
     setCurrentImage(index);
-  }
+  }, []);
 
-  function handleFavorite(id) {
-    console.log(id);
-    if (!isAuthenticated) navigate("/login");
-    setFavorite((prev) => !prev);
-  }
-
-  /**AVIVAR ESSA FUNCIONALIDADE DEPOIS */
-  //   useEffect(() => {
-  //     const interval = setInterval(() => {
-  //       if (currentImage < bannerData.length - 1) return handleNext();
-  //       if (currentImage >= bannerData.length - 1) return setCurrentImage(0);
-  //     }, 10000);
-  //     return () => clearInterval(interval);
-  //   }, [bannerData, currentImage]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (currentImage < bannerData.length - 1) return handleNext();
+      if (currentImage >= bannerData.length - 1) return setCurrentImage(0);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [bannerData, currentImage, handleNext]);
 
   if (bannerData.length === 0) {
     return <Spinner />;
@@ -65,9 +53,14 @@ function BannerHome() {
             >
               <div className="w-full h-full">
                 <img
-                  src={imageURL + data.backdrop_path}
-                  alt={`image of the ${data.name || data.title}`}
-                  className="h-full object-cover w-full"
+                  src={`https://img.gs/cqpctgbwgd/full/${
+                    imageURL + data.backdrop_path
+                  }`}
+                  alt={`image of ${data.name || data.title}`}
+                  loading="lazy"
+                  width="auto"
+                  height="auto"
+                  className="object-cover w-full h-full"
                 />
               </div>
 
@@ -102,10 +95,6 @@ function BannerHome() {
                         to={`/${data.media_type}/${data.id}`}
                         className="flex gap-x-4 z-50"
                       />
-                      <ButtonFavorite
-                        isFavorite={favorite}
-                        renderFavorite={() => handleFavorite(data?.id)}
-                      />
                     </div>
                   </div>
                 </div>
@@ -115,15 +104,17 @@ function BannerHome() {
         })}
       </div>
 
-      <div className="z-40 w-full absolute -bottom-10 lg:-bottom-0 flex justify-center items-center space-x-2 lg:space-x-3">
+      <div className="z-40 w-full absolute -bottom-10 lg:-bottom-0 flex justify-center items-center space-x-2 lg:space-x-3.5">
         {[...Array(bannerData.length)].map((banner, index) => (
           <button
+            aria-label="current button being shown"
             key={index}
             onClick={() => jumpToBanner(index)}
-            className={`w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 ${
+            className={twMerge(
+              "w-2 h-2 lg:w-3 lg:h-3 rounded-full bg-gray-500 hover:bg-gray-300",
               index === currentImage &&
-              "!bg-gray-300 w-4 transition-all duration-500"
-            }`}
+                "!bg-gray-100 w-5 lg:w-7 transition-all duration-500"
+            )}
           ></button>
         ))}
       </div>
