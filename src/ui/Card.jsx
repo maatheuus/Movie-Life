@@ -1,28 +1,45 @@
-import { useFetchData } from "../hooks/useFetchData";
-import noImage from "../../public/img/no-image.jpg";
-import Heading from "./Heading";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
+import noImage from "../../public/img/no-image.jpg";
+import { useFetchData } from "../hooks/useFetchData";
 import { formatDate } from "../utils/utils";
+import Heading from "./Heading";
 
-function Card({ data, trending, index, media_type }) {
+const Card = React.memo(function Card({ data, trending, index, media_type }) {
   const { data: imageURL } = useFetchData((state) => state.movieData.imageURL);
 
-  const mediaType = data?.media_type ?? media_type;
+  const mediaType = useMemo(
+    () => data?.media_type ?? media_type,
+    [data, media_type]
+  );
+
+  const imageSrc = useMemo(
+    () =>
+      data?.poster_path
+        ? `https://img.gs/cqpctgbwgd/160x100,3x/${imageURL}${data.poster_path}`
+        : noImage,
+    [data, imageURL]
+  );
+
+  const releaseDate = useMemo(
+    () => formatDate(data?.release_date || data?.first_air_date),
+    [data]
+  );
+  const rating = useMemo(() => data?.vote_average?.toFixed(1), [data]);
 
   return (
     <Link
       to={`/${mediaType}/${data?.id}`}
-      className="w-full min-w-[230px] max-w-[230px] h-80 overflow-hidden block rounded relative hover:scale-105 hover:rotate-2 transition-all duration-300"
+      className="w-full min-w-[230px] max-w-[230px] h-80 overflow-hidden block rounded relative hover:scale-105 transition-all duration-300"
     >
-      {data?.poster_path ? (
-        <img
-          src={imageURL + data?.poster_path}
-          alt={`image of ${mediaType}`}
-          loading="lazy"
-        />
-      ) : (
-        <img src={noImage} alt="image not available" loading="lazy" />
-      )}
+      <img
+        src={imageSrc}
+        alt={`image of ${mediaType}`}
+        loading="lazy"
+        width={230}
+        height={320}
+        className="object-cover w-full h-full"
+      />
 
       <div className="absolute top-3">
         {trending && (
@@ -39,16 +56,14 @@ function Card({ data, trending, index, media_type }) {
           label={data?.title || data?.name}
         />
         <div className="text-sm flex justify-between">
-          <p className="text-neutral-500">
-            {formatDate(data?.release_date || data?.first_air_date)}
-          </p>
+          <p className="text-neutral-500">{releaseDate}</p>
           <p className="text-[12px] flex items-center gap-x-1 bg-black/50 backdrop-blur-3xl overflow-hidden text-neutral-300 rounded-md px-1.5 font-bold">
-            Rating: {data?.vote_average?.toFixed(1)}
+            Rating: {rating}
           </p>
         </div>
       </div>
     </Link>
   );
-}
+});
 
 export default Card;
