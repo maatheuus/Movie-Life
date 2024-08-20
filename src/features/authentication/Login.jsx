@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { Button } from "@mui/material";
 import LayoutAuth from "./LayoutAuth";
-import { useForm } from "react-hook-form";
 import FormAuth from "./FormAuth";
-import { useLogin } from "./useLogin";
 import SpinnerMini from "../../ui/SpinnerMini";
+import { useLogin } from "./useLogin";
 
 function Login() {
   const { register, formState, handleSubmit } = useForm();
@@ -25,7 +25,7 @@ function Login() {
           register={register}
           errors={errors}
           login
-          disable={isLoading}
+          disabled={isLoading}
         />
 
         <div className="mt-6">
