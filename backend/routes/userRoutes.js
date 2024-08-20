@@ -6,11 +6,13 @@ import {
   protect,
   forgotPassword,
   resetPassword,
+  updatePassword,
 } from "../controllers/authController.js";
 import {
   resizeImages,
   updateAccount,
   uploadUserPhoto,
+  deleteAccount,
 } from "../controllers/userController.js";
 
 export const router = Router();
@@ -25,4 +27,6 @@ router.patch("/resetPassword/:token", resetPassword);
 // Protect all routes after this middleware
 router.use(protect);
 
+router.patch("/updateMyPassword", updatePassword);
 router.patch("/update", uploadUserPhoto, resizeImages, updateAccount);
+router.delete("/delete-account/:id", deleteAccount);
