@@ -1,8 +1,5 @@
 import { IconButton } from "@mui/material";
-import {
-  IoIosArrowDropleftCircle,
-  IoIosArrowDroprightCircle,
-} from "react-icons/io";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 
 function ScrollButtons({ handlePrevious, handleNext }) {
   return (
@@ -14,7 +11,7 @@ function ScrollButtons({ handlePrevious, handleNext }) {
         color="inherit"
         className="z-40"
       >
-        <IoIosArrowDropleftCircle />
+        <ChevronLeft />
       </IconButton>
       <IconButton
         onClick={handleNext}
@@ -23,7 +20,7 @@ function ScrollButtons({ handlePrevious, handleNext }) {
         color="inherit"
         className="z-40"
       >
-        <IoIosArrowDroprightCircle />
+        <ChevronRight />
       </IconButton>
     </>
   );
