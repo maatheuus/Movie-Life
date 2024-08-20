@@ -24,6 +24,7 @@ export async function login(data) {
       headers: { "Content-Type": "application/json" },
     });
 
+    console.log(res);
     if (res.data.status !== "success")
       throw new Error("Something went wrong to login, try again later!");
 
@@ -32,6 +33,7 @@ export async function login(data) {
     throw new Error(error.message);
   }
 }
+
 export async function logout() {
   try {
     return await axios.get(`${URL}/logout`);
@@ -66,5 +68,22 @@ export async function resetPassword({ token, updatePassword }) {
     return res.data;
   } catch (error) {
     throw new Error(error.message);
+  }
+}
+
+export async function deleteAccount({ token, id }) {
+  try {
+    const res = await axios.delete(`${URL}/delete-account/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status !== 204)
+      throw new Error("Something went wrong while delete account");
+
+    return null;
+  } catch (error) {
+    console.log(error);
   }
 }
