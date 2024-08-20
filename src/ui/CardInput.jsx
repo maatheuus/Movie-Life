@@ -1,9 +1,8 @@
 import moment from "moment";
-import { useFetchData } from "../hooks/useFetchData";
-import { FaStar } from "react-icons/fa";
-
-import Heading from "./Heading";
 import { Link } from "react-router-dom";
+
+import { useFetchData } from "../hooks/useFetchData";
+import Heading from "./Heading";
 
 function CardInput({ data, media_type }) {
   const { data: imageURL } = useFetchData((state) => state.movieData.imageURL);
