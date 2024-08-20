@@ -1,67 +1,64 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
+async function fetchNowPlayingData(endPoint, query) {
+  if (!endPoint) return [];
+  const { data } = await axios.get(endPoint, query);
+  return data.results;
+}
 export function useFetch(endPoint, query = null) {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function fetchNowPlayingData() {
-    if (!endPoint) return;
-
-    try {
-      setIsLoading(true);
-      const res = await axios.get(endPoint, query);
-      setData(res.data.results);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      throw new Error(error);
-    }
-  }
-
-  useEffect(() => {
-    fetchNowPlayingData();
-  }, [endPoint, query]);
+  const { data, isLoading } = useQuery({
+    queryKey: ["fetchData", endPoint, query],
+    queryFn: () => fetchNowPlayingData(endPoint, query),
+    refetchOnWindowFocus: false,
+    enabled: !!endPoint,
+    staleTime: 5 * 60 * 1000, // 5 min
+    cacheTime: 30 * 60 * 1000, // 30 min
+  });
 
   return { isLoading, data };
 }
 
-export function useFetchNavigation(explore, page, setPage) {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [totalResults, setTotalResults] = useState(0);
+async function fetchData({ pageParam = 1, queryKey }) {
+  const explore = queryKey[1];
 
-  async function fetchData() {
-    try {
-      setIsLoading(true);
-      const res = await axios.get(`discover/${explore}`, {
-        params: { page },
-      });
-      setTotalResults(res.data.total_results);
-      setData((prev) => {
-        const existingIds = new Set(prev.map((item) => item.id));
-        const newResults = res.data.results.filter(
-          (item) => !existingIds.has(item.id)
-        );
-        return [...prev, ...newResults];
-      });
-      setIsLoading(false);
-    } catch (error) {
-      throw new Error(error);
-    }
+  try {
+    const { data } = await axios.get(`discover/${explore}`, {
+      params: { page: pageParam },
+    });
+    return data;
+  } catch (error) {
+    throw new Error(error.message || "Error fetching data");
   }
+}
 
-  useEffect(() => {
-    fetchData();
-  }, [page]);
+export function useFetchNavigation(explore) {
+  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery({
+    queryKey: ["fetchNavigation", explore],
+    queryFn: fetchData,
+    refetchOnWindowFocus: false,
+    getNextPageParam: (lastPage) => {
+      return lastPage.page < lastPage.total_pages
+        ? lastPage.page + 1
+        : undefined;
+    },
+    staleTime: 5 * 60 * 1000, // 5 min
+    cacheTime: 30 * 60 * 1000, // 30 min
+  });
 
-  useEffect(() => {
-    setPage(1);
-    setData([]);
-    setTotalResults(0);
-    fetchData();
-  }, [explore]);
+  const allData =
+    data?.pages.flatMap((page) =>
+      page.results.map((movieData) => ({
+        ...movieData,
+        isBookmarked: false,
+      }))
+    ) || [];
 
-  return { isLoading, data, totalResults };
+  return {
+    isLoading,
+    data: allData,
+    totalResults: data?.pages[0]?.total_results,
+    fetchNextPage,
+    hasNextPage,
+  };
 }
