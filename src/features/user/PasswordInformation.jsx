@@ -1,13 +1,16 @@
 import { useForm } from "react-hook-form";
-import { useUser } from "../authentication/useUser";
-import { useUpdate } from "./useUpdate";
+import { PasswordFields } from "./FormUser";
+import { useUpdatePassword } from "./useUpdatePassword";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 function PasswordInformation() {
-  const { user } = useUser();
-  const { update, isLoading } = useUpdate();
-  const { register, formState, handleSubmit } = useForm();
+  const { updatePassword, isLoading } = useUpdatePassword();
+  const { register, formState, handleSubmit, getValues } = useForm();
+  const { errors } = formState;
 
-  // const { email, name, photo } = user;
+  function onSubmit(data) {
+    updatePassword(data);
+  }
 
   return (
     <div className="bg-stone-200 px-8 py-10 flex flex-col gap-y-6 md:rounded-lg lg:pt-12">
@@ -22,52 +25,21 @@ function PasswordInformation() {
         className="px-6 flex flex-col gap-y-6"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div>
-          <label
-            htmlFor="currentPassword"
-            className="block mb-2 text-sm text-stone-950 font-bold"
-          >
-            Current Password
-          </label>
-          <input
-            type="password"
-            id="currentPassword"
-            name="currentPassword"
-            className="block w-full max-w-80 py-2 px-4 border-2 rounded-md border-black bg-transparent text-neutral-800 outline-none disabled:bg-gray-700"
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="newPassword"
-            className="block mb-2 text-sm text-stone-950 font-bold"
-          >
-            New Password
-          </label>
-          <input
-            type="password"
-            id="newPassword"
-            name="newPassword"
-            className="block w-full max-w-80 py-2 px-4 border-2 rounded-md border-black bg-transparent text-neutral-800 outline-none disabled:bg-gray-700"
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="confirmPassword"
-            className="block mb-2 text-sm text-stone-950 font-bold"
-          >
-            Re-type New Password
-          </label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            className="block w-full max-w-80 py-2 px-4 border-2 rounded-md border-black bg-transparent text-neutral-800 outline-none disabled:bg-gray-700"
-          />
-        </div>
-
+        <PasswordFields
+          register={register}
+          errors={errors}
+          getValues={getValues}
+        />
         <div className="w-full flex justify-start">
-          <button className="w-full max-w-48 items-end rounded-lg bg-stone-800 py-2 text-stone-200 hover:bg-stone-950 hover:text-stone-50 transition-all duration-200">
-            Change Password
+          <button
+            disabled={isLoading}
+            className="w-full max-w-48 rounded-lg bg-stone-800 py-2 text-stone-200 hover:bg-stone-950 hover:text-stone-50 transition-all duration-200 disabled:bg-stone-800/70 disabled:cursor-not-allowed"
+          >
+            {isLoading ? (
+              <SpinnerMini className="mx-auto text-white" />
+            ) : (
+              "Change Password"
+            )}
           </button>
         </div>
       </form>
