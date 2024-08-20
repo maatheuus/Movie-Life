@@ -21,3 +21,15 @@ export function getNamesFromCrew(crew, jobTitle) {
       ?.join(", ") || ""
   );
 }
+
+export function flattenArray(arr) {
+  return arr.reduce(
+    (acc, val) =>
+      Array.isArray(val) ? acc.concat(flattenArray(val)) : acc.concat(val),
+    []
+  );
+}
+
+export function removeDuplicates(arr, prop) {
+  return [...new Map(arr.map((item) => [item[prop], item])).values()];
+}
