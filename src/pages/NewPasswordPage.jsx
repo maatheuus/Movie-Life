@@ -1,4 +1,4 @@
-import NewPassword from "../features/authentication/NewPassword";
+import NewPassword from "../features/authentication/resetPassword/NewPassword";
 
 function NewPasswordPage() {
   return <NewPassword />;
