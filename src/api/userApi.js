@@ -15,6 +15,27 @@ export async function updateUser(userToken, updateData) {
 
     return res?.data;
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
+  }
+}
+
+export async function updateMyPassword(userToken, updateData) {
+  try {
+    const res = await axios.patch(`${URL}/updateMyPassword`, updateData, {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+
+    if (res.status !== 200)
+      throw new Error(
+        `Failed to update password: ${res.status} ${res.statusText}`
+      );
+
+    return res?.data;
+  } catch (error) {
+    throw new Error(
+      `An error occurred while updating the password: ${error.message}`
+    );
   }
 }
