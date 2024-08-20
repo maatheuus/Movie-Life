@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 
 function FormAuth({
   register,
@@ -9,7 +9,7 @@ function FormAuth({
   name,
   confirmPassword,
   login,
-  disable,
+  disabled,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -30,7 +30,7 @@ function FormAuth({
             type="text"
             id="name"
             name="name"
-            disable={disable}
+            disabled={disabled}
             className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30 disabled:bg-gray-700"
             placeholder="Your name"
             {...register("name", {
@@ -52,11 +52,12 @@ function FormAuth({
         </label>
 
         <input
-          disable={disable}
+          disabled={disabled}
           type="email"
           autoComplete="email"
           id="email"
           name="email"
+          defaultValue="maat@teste.com"
           className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30 disabled:bg-gray-700"
           placeholder="example@example.com"
           {...register("email", {
@@ -86,15 +87,14 @@ function FormAuth({
 
           <div className="absolute right-2 -bottom-9 flex items-center ps-3 text-gray-primary">
             <button
-              variation="primary"
               type="button"
               className="absolute right-1 -top-4"
               onClick={() => handleShowPassword("password")}
             >
               {showPassword ? (
-                <FaEyeSlash className="w-auto h-5 mx-3 text-gray-500" />
+                <EyeOff className="w-auto h-5 mx-3 text-gray-500" />
               ) : (
-                <FaEye className="w-auto h-5 mx-3 text-gray-500" />
+                <Eye className="w-auto h-5 mx-3 text-gray-500" />
               )}
             </button>
           </div>
@@ -111,8 +111,9 @@ function FormAuth({
           type={showPassword ? "text" : "password"}
           id="password"
           name="password"
+          defaultValue="user1234"
           placeholder="Your password"
-          disable={disable}
+          disabled={disabled}
           className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30 disabled:bg-gray-700"
           {...register("password", {
             required: {
@@ -121,7 +122,7 @@ function FormAuth({
             },
             minLength: {
               value: 6,
-              message: "The min length is 6 caracteres",
+              message: "Password must be at least 6 characters long",
             },
           })}
         />
@@ -139,15 +140,14 @@ function FormAuth({
             Confirm your password
             <div className="absolute right-2 -bottom-8 flex items-center ps-3 text-gray-primary">
               <button
-                variation="primary"
                 type="button"
                 className="absolute right-1"
                 onClick={() => handleShowPassword("confirm")}
               >
                 {showConfirmPassword ? (
-                  <FaEyeSlash className="w-auto h-5 mx-3 text-gray-500" />
+                  <EyeOff className="w-auto h-5 mx-3 text-gray-500" />
                 ) : (
-                  <FaEye className="w-auto h-5 mx-3 text-gray-500" />
+                  <Eye className="w-auto h-5 mx-3 text-gray-500" />
                 )}
               </button>
             </div>
@@ -156,7 +156,7 @@ function FormAuth({
           <input
             type={showConfirmPassword ? "text" : "password"}
             id="confirmPassword"
-            disable={disable}
+            disabled={disabled}
             name="confirmPassword"
             className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30 disabled:bg-gray-700"
             placeholder="Confirm your password"
