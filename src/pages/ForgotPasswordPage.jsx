@@ -1,4 +1,4 @@
-import ForgotPassword from "../features/authentication/ForgotPassword";
+import ForgotPassword from "../features/authentication/resetPassword/ForgotPassword";
 
 function ForgotPasswordPage() {
   return <ForgotPassword />;
