@@ -1,9 +1,12 @@
 import { useState } from "react";
 import AlertDeleteAccount from "./AlertDeleteAccount";
 import { Button, DialogActions } from "@mui/material";
+import { useDelete } from "./useDelete";
+import SpinnerMini from "../../ui/SpinnerMini";
 
-function DeleteAccount() {
+function DeleteAccount({ user, token }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { deleteAccount, isDeleting } = useDelete();
 
   const handleCloseAlert = () => setIsOpen(false);
 
@@ -34,17 +37,21 @@ function DeleteAccount() {
           <DialogActions>
             <Button
               onClick={handleCloseAlert}
+              disabled={isDeleting}
               variant="contained"
-              className="!bg-stone-950 !text-stone-100 !font-bold"
+              className="!bg-stone-950 !text-stone-100 !font-bold disabled:!bg-stone-500"
             >
               Cancel
             </Button>
             <Button
-              onClick={handleCloseAlert}
+              onClick={() => {
+                deleteAccount({ token, id: user._id });
+              }}
+              disabled={isDeleting}
               variant="contained"
-              className="!bg-red-400 text-stone-300 font-bold hover:!bg-red-600 transition-all duration-200"
+              className="!bg-red-400 text-stone-300 font-bold hover:!bg-red-600 transition-all duration-200 disabled:!bg-red-600"
             >
-              Delete
+              {isDeleting ? <SpinnerMini className="text-red-900" /> : "Delete"}
             </Button>
           </DialogActions>
         </AlertDeleteAccount>
