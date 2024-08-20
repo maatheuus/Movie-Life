@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { CiSearch } from "react-icons/ci";
+import { Search } from "lucide-react";
 import { useFetch } from "../hooks/useFetch";
 import Card from "../ui/Card";
 import FormSearch from "../ui/FormSearch";
@@ -26,7 +26,7 @@ function SearchPage() {
           <div className="max-w-[500px] w-full px-3 mx-auto">
             <div className="relative ">
               <div className="absolute z-10 inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <CiSearch />
+                <Search />
               </div>
               <input
                 type="search"
