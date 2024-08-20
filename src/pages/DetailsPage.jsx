@@ -5,20 +5,18 @@ import DetailsSection from "../features/details/DetailsSection";
 import ImageHeader from "../features/details/ImageHeader";
 import PosterSection from "../features/details/PosterSection";
 import ProvidersSection from "../features/details/ProvidersSection";
-import { useFetch } from "../hooks/useFetch";
-import { useFetchData } from "../hooks/useFetchData";
 import useFetchDetails from "../hooks/useFetchDetails";
 import HorizontalScrollCard from "../ui/HorizontalScrollCard";
+import Spinner from "../ui/Spinner";
 import VideoPlay from "../ui/VideoPlay";
 import { calculateDuration, getNamesFromCrew } from "../utils/utils";
-import Spinner from "../ui/Spinner";
+import { useFetch } from "../hooks/useFetch";
+import { useFetchData } from "../hooks/useFetchData";
 
 function DetailsPage() {
   const { explore, id } = useParams();
   const { data: imageURL } = useFetchData((state) => state.movieData.imageURL);
-  const { data = [], loading: loadingData } = useFetchDetails(
-    `/${explore}/${id}`
-  );
+  const { data, isLoading: loadingData } = useFetchDetails(`/${explore}/${id}`);
   const { data: castData } = useFetchDetails(`/${explore}/${id}/credits`);
   const { data: similarData } = useFetch(`/${explore}/${id}/similar`);
   const { data: recommendationData } = useFetch(
@@ -56,6 +54,7 @@ function DetailsPage() {
         <div className="flex flex-col my-3 lg:flex-row gap-5 lg:gap-10">
           <PosterSection
             imageURL={imageURL}
+            data={data}
             posterPath={data?.poster_path}
             onPlay={() => handleVideo(data.id)}
           />
