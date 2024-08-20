@@ -1,24 +1,35 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function useFetchDetails(endpoint) {
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(endpoint);
-      setLoading(false);
-      setData(response.data);
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+  const {
+    data = [],
+    mutate: fetchDetails,
+    isPending: isLoading,
+  } = useMutation({
+    mutationFn: async () => {
+      const res = await axios.get(endpoint);
+      const movieData = {
+        ...res.data,
+        isBookmarked: false,
+      };
+      return movieData;
+    },
+
+    onSuccess: (data) => {
+      queryClient.setQueryData(["currentMovie"], data);
+    },
+    onError: (error) => {
+      console.log("ERROR", error);
+    },
+  });
 
   useEffect(() => {
-    fetchData();
+    fetchDetails();
   }, [endpoint]);
 
-  return { data, loading };
+  return { data, isLoading };
 }
