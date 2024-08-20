@@ -23,6 +23,7 @@ export const createSendToken = (user, role, statusCode, req, res) => {
 
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
+  console.log("COKKIE", res);
   res.cookie("jwt", token, cookieOptions);
 
   user.password = undefined;
@@ -44,7 +45,6 @@ export const signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
   });
-  console.log("newUser", newUser);
 
   createSendToken(newUser, "authenticated", 201, req, res);
 });
@@ -57,7 +57,7 @@ export const login = catchAsync(async (req, res, next) => {
   }
 
   const user = await User.findOne({ email }).select("+password");
-  const correctPassword = await user.correctPassword(password, user.password);
+  const correctPassword = await user?.correctPassword(password, user.password);
 
   if (!user || !correctPassword) {
     return next(new AppError("Incorrect email or password", 401));
@@ -113,11 +113,11 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
   const resetToken = await user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
 
-  const resetURL = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/user/resetPassword/${resetToken}`;
+  // const resetURL = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/api/v1/user/resetPassword/${resetToken}`;
 
-  const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you dint't forget your password, please ignore this email!`;
+  const message = `Forgot your password? No problem, just copy and paste the token below into your application and we'll take care of the rest. \n${resetToken}.\nIf you dint't forget your password, please ignore this email!`;
 
   try {
     await sendEmail({
@@ -131,10 +131,10 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
       message: "Token sent to email!",
     });
   } catch (error) {
+    console.log("ERROR", error);
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
-
     return next(
       new AppError("There was an error sending the email. Try again later", 500)
     );
@@ -156,6 +156,22 @@ export const resetPassword = catchAsync(async (req, res, next) => {
   user.confirmPassword = req.body.confirmPassword;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
+  await user.save();
+
+  createSendToken(user, "authenticated", 200, req, res);
+});
+
+export const updatePassword = catchAsync(async (req, res, next) => {
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+
+  const user = await User.findById(req.user._id).select("+password");
+
+  if (!(await user.correctPassword(currentPassword, user.password))) {
+    return next(new AppError("Your current password is wrong.", 401));
+  }
+
+  user.password = newPassword;
+  user.confirmPassword = confirmPassword;
   await user.save();
 
   createSendToken(user, "authenticated", 200, req, res);
