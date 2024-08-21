@@ -8,7 +8,6 @@ import store from "./store/store.js";
 import "./index.css";
 
 const VITE_ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
-console.log(VITE_ACCESS_TOKEN);
 
 /**setup axios */
 axios.defaults.baseURL = "https://api.themoviedb.org/3/";

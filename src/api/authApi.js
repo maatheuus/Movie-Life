@@ -24,7 +24,6 @@ export async function login(data) {
       headers: { "Content-Type": "application/json" },
     });
 
-    console.log(res);
     if (res.data.status !== "success")
       throw new Error("Something went wrong to login, try again later!");
 
