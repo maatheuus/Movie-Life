@@ -77,13 +77,13 @@ npm start
   ![Página Inicial](public\img\home-page.png)
 
 - Página de Detalhes:
-  ![Página Inicial](public\img\details-page.png)
+  ![Página de Detalhes](public\img\details-page.png)
 
 - Página de Favoritos:
-  ![Página Inicial](public\img\fav-page.png)
+  ![Página de Favoritos](public\img\fav-page.png)
 
 - Página de Reset de Senha:
-  ![Página Inicial](public\img\reset-pages.png)
+  ![Páginas de Reset de Senha](public\img\reset-pages.png)
 
 ## 🤝 Contribuições
 
