@@ -57,7 +57,6 @@ function FormAuth({
           autoComplete="email"
           id="email"
           name="email"
-          defaultValue="maat@teste.com"
           className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30 disabled:bg-gray-700"
           placeholder="example@example.com"
           {...register("email", {
@@ -111,7 +110,6 @@ function FormAuth({
           type={showPassword ? "text" : "password"}
           id="password"
           name="password"
-          defaultValue="user1234"
           placeholder="Your password"
           disabled={disabled}
           className="block w-full py-3 px-5 border rounded-lg placeholder-gray-600 bg-gray-900 text-gray-300 border-none border-gray-700 focus:border-blue-400 focus:ring-blue-400 focus:ring focus:ring-opacity-30 disabled:bg-gray-700"
